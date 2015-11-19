@@ -9,6 +9,7 @@ import ("fmt"
   // var frames = [][]int{}
   var framesTotals = []int{}
   var bonusTotals = []int{}
+  var totalScore = []int{}
   // var frame = []int{}
   // var bowl1 int
   // var bowl2 int
@@ -38,6 +39,7 @@ func addScores(scorecard []int) int {
   }
   return sum
 }
+
 
 func createFrames(scorecard []int) [][]int {
   frames := make([][]int, 10)
@@ -74,6 +76,22 @@ func calcBonusScore(framesTotals, scorecard []int) []int {
   return bonusTotals
 }
 
+func calcTotalScore(framesTotals, bonusTotals []int) []int {
+  var framePlusBonus int
+  for i := 0; i < len(framesTotals); i++ {
+    framePlusBonus = framesTotals[i] + bonusTotals[i]
+    totalScore = append(totalScore, framePlusBonus)
+  }
+  return totalScore
+}
+
+func addTotalScores(totalScore []int) int {
+  sum := 0
+  for _, value := range totalScore {
+    sum += value
+  }
+  return sum
+}
 
 
 func main () {
@@ -89,9 +107,10 @@ func main () {
   pushScores(5, 4)
   pushScores(5, 4)
 
-  fmt.Println(scorecard)
-  fmt.Println(addScores(scorecard))
-  fmt.Println(createFrames(scorecard))
-  fmt.Println(calcFramesTotal(createFrames(scorecard)))
-  fmt.Println(calcBonusScore(framesTotals, scorecard))
+  fmt.Println("Scorecard:",scorecard)
+  fmt.Println("Frames:",createFrames(scorecard))
+  fmt.Println("Score without bonus", calcFramesTotal(createFrames(scorecard)))
+  fmt.Println("Bonus", calcBonusScore(framesTotals, scorecard))
+  fmt.Println("Frame Total:", calcTotalScore(framesTotals, bonusTotals))
+  fmt.Println("Total Score:", addTotalScores(totalScore))
 }
