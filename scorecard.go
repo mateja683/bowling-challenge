@@ -5,14 +5,12 @@ import ("fmt"
         "time"
       )
 
-  var scorecard = []int{}
-  // var frames = [][]int{}
-  var framesTotals = []int{}
-  var bonusTotals = []int{}
-  var totalScore = []int{}
-  // var frame = []int{}
   var bowl1 int
   var bowl2 int
+  var scorecard []int
+  var framesTotals []int
+  var bonusTotals []int
+  var totalScore []int
 
 
 func random(min, max int) int {
@@ -44,7 +42,6 @@ func addScores(scorecard []int) int {
   return sum
 }
 
-
 func createFrames(scorecard []int) [][]int {
   frames := make([][]int, 10)
   for i, idx := 0, 0; i < 10; i, idx = i + 1, idx + 2 {
@@ -65,13 +62,22 @@ func calcFramesTotal(frames [][]int) []int {
   return framesTotals
 }
 
+
+// REFACTOR THIS TO USE CASES, NOT NESTED IFS
 func calcBonusScore(framesTotals, scorecard []int) []int {
   for i := 0; i < len(framesTotals); i++ {
     var bonus int
     if framesTotals[i] == 10 {
       if scorecard[i*2] == 10 {
-        bonus = framesTotals[i+1]
+        if scorecard[((i*2)+2)] == 10 {
+          // case two strikes are bowled consecutively
+          bonus = framesTotals[i+1] + scorecard[((i*2)+4)]
+        } else {
+          // case one strike is bowled
+          bonus = framesTotals[i+1]
+        }
       } else {
+        // case a spare is bowled
         bonus = scorecard[(i*2)+2]
       }
     }
@@ -94,12 +100,23 @@ func addTotalScores(totalScore []int) int {
   for _, value := range totalScore {
     sum += value
   }
-  return sum
+  return (sum / 2) // WHY IS THIS BEING DOUBLED? SOMETHING TO DO WITH CALLING THE FUNCTION, NOT THE ARGUMENT
 }
 
 
 func main () {
   bowl()
+
+  // pushScores(10, 0)
+  // pushScores(10, 0)
+  // pushScores(5, 0)
+  // pushScores(10, 0)
+  // pushScores(5, 5)
+  // pushScores(7, 2)
+  // pushScores(10, 0)
+  // pushScores(10, 0)
+  // pushScores(10, 0)
+  // pushScores(9, 0)
 
   fmt.Println("Scorecard:",scorecard)
   fmt.Println("Frames:",createFrames(scorecard))
