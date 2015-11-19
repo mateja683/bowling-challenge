@@ -8,6 +8,7 @@ import ("fmt"
   var scorecard = []int{}
   // var frames = [][]int{}
   var framesTotals = []int{}
+  var bonusTotals = []int{}
   // var frame = []int{}
   // var bowl1 int
   // var bowl2 int
@@ -58,16 +59,19 @@ func calcFramesTotal(frames [][]int) []int {
   return framesTotals
 }
 
-func calcBonusScore(framesTotals, scorecard []int) {
+func calcBonusScore(framesTotals, scorecard []int) []int {
   for i := 0; i < len(framesTotals); i++ {
+    var bonus int
     if framesTotals[i] == 10 {
       if scorecard[i*2] == 10 {
-        fmt.Println("strike")
+        bonus = framesTotals[i+1]
       } else {
-        fmt.Println("spare")
+        bonus = scorecard[(i*2)+2]
       }
     }
+    bonusTotals = append(bonusTotals, bonus)
   }
+  return bonusTotals
 }
 
 
@@ -89,5 +93,5 @@ func main () {
   fmt.Println(addScores(scorecard))
   fmt.Println(createFrames(scorecard))
   fmt.Println(calcFramesTotal(createFrames(scorecard)))
-  calcBonusScore(framesTotals, scorecard)
+  fmt.Println(calcBonusScore(framesTotals, scorecard))
 }
