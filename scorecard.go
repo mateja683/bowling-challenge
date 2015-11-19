@@ -6,8 +6,10 @@ import ("fmt"
       )
 
   var scorecard = []int{}
-  //var frames = [][]int{}
+  // var frames = [][]int{}
   var new = [][]int{}
+  var framesTotals = []int{}
+  var frame = []int{}
   var bowl1 int
   var bowl2 int
 
@@ -42,22 +44,23 @@ func createFrames(scorecard []int) [][]int {
   for i, idx := 0, 0; i < 10; i, idx = i + 1, idx + 2 {
     frames[i] = scorecard[idx:idx+2]
   }
+  // frames = append(frames)
   return frames
 }
 
 func calcBonusScore(frames [][]int) ([]int) {
-  framesTotals := []int{}
   for i := 0; i < len(frames); i++ {
-    sum := 0
     frame := frames[i]
-    for _, value := range frame {
+    sum := 0
+      for _, value := range frame {
         sum += value
       }
-    return sum
-    framesTotals = append(framesTotals, sum)
+      framesTotals = append(framesTotals, sum)
   }
   return framesTotals
+
 }
+
 
 // func appendFunc() {
 //
@@ -81,4 +84,5 @@ func main () {
   fmt.Println(addScores(scorecard))
   fmt.Println(createFrames(scorecard))
   fmt.Println(calcBonusScore(createFrames(scorecard)))
+  // fmt.Println(frames)
 }
