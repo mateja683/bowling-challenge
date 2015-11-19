@@ -45,9 +45,24 @@ func createFrames(scorecard []int) [][]int {
   return frames
 }
 
-func calcBonusScore(frames [][]int) [][]int {
-  return frames[0]
+func calcBonusScore(frames [][]int) ([]int) {
+  framesTotals := []int{}
+  for i := 0; i < len(frames); i++ {
+    sum := 0
+    frame := frames[i]
+    for _, value := range frame {
+        sum += value
+      }
+    return sum
+    framesTotals = append(framesTotals, sum)
+  }
+  return framesTotals
 }
+
+// func appendFunc() {
+//
+// }
+
 
 func main () {
   // bowl()
@@ -65,5 +80,5 @@ func main () {
   fmt.Println(scorecard)
   fmt.Println(addScores(scorecard))
   fmt.Println(createFrames(scorecard))
-  fmt.Println(printFrames(createFrames(scorecard)))
+  fmt.Println(calcBonusScore(createFrames(scorecard)))
 }
