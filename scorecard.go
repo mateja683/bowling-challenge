@@ -1,8 +1,8 @@
 package main
 
 import ("fmt"
-        // "math/rand"
-        // "time"
+        "math/rand"
+        "time"
       )
 
   var scorecard = []int{}
@@ -11,22 +11,26 @@ import ("fmt"
   var bonusTotals = []int{}
   var totalScore = []int{}
   // var frame = []int{}
-  // var bowl1 int
-  // var bowl2 int
+  var bowl1 int
+  var bowl2 int
 
-// func bowl() {
-//   for i :=1; i <=10; i++ {
-//     rand.Seed(time.Now().Unix())
-//     bowl1 = rand.Intn(11)
-//   if bowl1 == 10 {
-//     bowl2 = 0
-//   } else {
-//     rand.Seed(time.Now().Unix())
-//     bowl2 = rand.Intn(11-bowl1)
-//   }
-//   pushScores(bowl1, bowl2)
-//   }
-// }
+
+func random(min, max int) int {
+     rand.Seed(int64(time.Now().Nanosecond()))
+     return rand.Intn(max - min) + min
+  }
+
+func bowl() {
+  for i :=1; i <=10; i++ {
+    bowl1 = random(0,11)
+  if bowl1 == 10 {
+    bowl2 = 0
+  } else {
+    bowl2 = random(0, 11 - bowl1)
+  }
+  pushScores(bowl1, bowl2)
+  }
+}
 
 func pushScores(bowl1, bowl2 int) {
   scorecard = append(scorecard, bowl1, bowl2)
@@ -95,22 +99,12 @@ func addTotalScores(totalScore []int) int {
 
 
 func main () {
-  // bowl()
-  pushScores(10, 0)
-  pushScores(3, 4)
-  pushScores(5, 5)
-  pushScores(10, 0)
-  pushScores(2, 4)
-  pushScores(5, 4)
-  pushScores(5, 4)
-  pushScores(5, 4)
-  pushScores(5, 4)
-  pushScores(5, 4)
+  bowl()
 
   fmt.Println("Scorecard:",scorecard)
   fmt.Println("Frames:",createFrames(scorecard))
   fmt.Println("Score without bonus", calcFramesTotal(createFrames(scorecard)))
   fmt.Println("Bonus", calcBonusScore(framesTotals, scorecard))
   fmt.Println("Frame Total:", calcTotalScore(framesTotals, bonusTotals))
-  fmt.Println("Total Score:", addTotalScores(totalScore))
+  fmt.Println("Total Score:", addTotalScores(calcTotalScore(framesTotals, bonusTotals)))
 }
