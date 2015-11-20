@@ -7,7 +7,9 @@ import ("fmt"
 
   var bowl1 int
   var bowl2 int
+  var bowl3 int
   var scorecard []int
+  var finalFrame []int
   var framesTotals []int
   var bonusTotals []int
   var totalScore []int
@@ -19,7 +21,7 @@ func random(min, max int) int {
   }
 
 func bowl() {
-  for i :=1; i <=10; i++ {
+  for i :=1; i <=9; i++ {
     bowl1 = random(0,11)
   if bowl1 == 10 {
     bowl2 = 0
@@ -30,8 +32,35 @@ func bowl() {
   }
 }
 
+
+func bowlFinalFrame() {
+  bowl1 = random(0,11)
+  if bowl1 == 10 {
+    bowl2 = random(0,11)
+    if bowl2 == 10 {
+      bowl3 = random(0,11)
+    } else {
+      bowl3 = random(0, 11-bowl2)
+    }
+  } else {
+    bowl2 = random(0, 11-bowl1)
+    if (bowl1 + bowl2 == 10) {
+      bowl3 = random(0,11)
+    } else {
+      bowl3 = 0
+    }
+  pushFinalFrameScore(bowl1, bowl2, bowl3)
+  }
+}
+
+
 func pushScores(bowl1, bowl2 int) {
   scorecard = append(scorecard, bowl1, bowl2)
+}
+
+func pushFinalFrameScore(bowl1, bowl2, bowl3 int) {
+  finalFrame = append(finalFrame, bowl1, bowl2, bowl3)
+  scorecard = append(scorecard, bowl1, bowl2, bowl3)
 }
 
 func addScores(scorecard []int) int {
@@ -43,12 +72,14 @@ func addScores(scorecard []int) int {
 }
 
 func createFrames(scorecard []int) [][]int {
-  frames := make([][]int, 10)
-  for i, idx := 0, 0; i < 10; i, idx = i + 1, idx + 2 {
+  frames := make([][]int, 9)
+  for i, idx := 0, 0; i < 9; i, idx = i + 1, idx + 2 {
     frames[i] = scorecard[idx:idx+2]
   }
+  frames = append(frames, finalFrame)
   return frames
 }
+
 
 func calcFramesTotal(frames [][]int) []int {
   for i := 0; i < len(frames); i++ {
@@ -106,6 +137,8 @@ func addTotalScores(totalScore []int) int {
 
 func main () {
   bowl()
+  bowlFinalFrame()
+
 
   // pushScores(10, 0)
   // pushScores(10, 0)
@@ -119,9 +152,14 @@ func main () {
   // pushScores(9, 0)
 
   fmt.Println("Scorecard:",scorecard)
+
   fmt.Println("Frames:",createFrames(scorecard))
   fmt.Println("Score without bonus", calcFramesTotal(createFrames(scorecard)))
   fmt.Println("Bonus", calcBonusScore(framesTotals, scorecard))
   fmt.Println("Frame Total:", calcTotalScore(framesTotals, bonusTotals))
   fmt.Println("Total Score:", addTotalScores(calcTotalScore(framesTotals, bonusTotals)))
 }
+
+
+// How does ninth frame handle the 10th frames score, in the case the 9th frame
+// is a strike or spare?
