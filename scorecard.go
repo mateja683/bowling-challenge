@@ -96,7 +96,7 @@ func calcFramesTotal(frames [][]int) []int {
 
 // REFACTOR THIS TO USE CASES, NOT NESTED IFS
 func calcBonusScore(framesTotals, scorecard []int) []int {
-  for i := 0; i < len(framesTotals); i++ {
+  for i := 0; i < len(framesTotals)-2; i++ {
     var bonus int
     if framesTotals[i] == 10 {
       if scorecard[i*2] == 10 {
@@ -116,6 +116,21 @@ func calcBonusScore(framesTotals, scorecard []int) []int {
   }
   return bonusTotals
 }
+
+func calcFinalFrameBonusScore(framesTotals, scorecard []int) []int {
+  var bonus int
+  if framesTotals[8] == 10 {
+    if scorecard[16] == 10 {
+      bonus = scorecard[18] + scorecard[19]
+    } else {
+      bonus = scorecard[18]
+    }
+  }
+  bonusTotals = append(bonusTotals, bonus)
+  bonusTotals = append(bonusTotals, 0)
+  return bonusTotals
+}
+
 
 func calcTotalScore(framesTotals, bonusTotals []int) []int {
   var framePlusBonus int
@@ -139,27 +154,26 @@ func main () {
   bowl()
   bowlFinalFrame()
 
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(0, 0)
+  // pushScores(10, 0)
+  // pushFinalFrameScore(10, 8, 0)
 
-  // pushScores(10, 0)
-  // pushScores(10, 0)
-  // pushScores(5, 0)
-  // pushScores(10, 0)
-  // pushScores(5, 5)
-  // pushScores(7, 2)
-  // pushScores(10, 0)
-  // pushScores(10, 0)
-  // pushScores(10, 0)
-  // pushScores(9, 0)
+
 
   fmt.Println("Scorecard:",scorecard)
 
   fmt.Println("Frames:",createFrames(scorecard))
   fmt.Println("Score without bonus", calcFramesTotal(createFrames(scorecard)))
-  fmt.Println("Bonus", calcBonusScore(framesTotals, scorecard))
+  calcBonusScore(framesTotals, scorecard)
+  calcFinalFrameBonusScore(framesTotals, scorecard)
+  fmt.Println("Bonus Scores:", bonusTotals)
   fmt.Println("Frame Total:", calcTotalScore(framesTotals, bonusTotals))
   fmt.Println("Total Score:", addTotalScores(calcTotalScore(framesTotals, bonusTotals)))
 }
-
-
-// How does ninth frame handle the 10th frames score, in the case the 9th frame
-// is a strike or spare?
